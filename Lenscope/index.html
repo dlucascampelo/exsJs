@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="shortcut icon"
+      href="https://pbs.twimg.com/profile_images/1188792615208177665/tdRbaV55_400x400.jpg"
+      type="image/x-icon"
+    />
+    <title>Lenscope</title>
+  </head>
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap");
+    :root {
+      --primary-color: rgb(17, 86, 102);
+      --primary-color-darker: rgb(9, 48, 56);
+    }
+
+    * {
+      box-sizing: border-box;
+      outline: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--primary-color);
+      font-family: "Open sans", sans-serif;
+      font-size: 1.3em;
+      line-height: 1.5em;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .container h2 {
+      font-size: 20px;
+    }
+    .container img {
+      width: 400px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    form input,
+    form label,
+    form button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    form input {
+      font-size: 24px;
+      height: 50px;
+      padding: 0 20px;
+    }
+
+    form input:focus {
+      outline: 1px solid var(--primary-color);
+    }
+
+    form button {
+      border: none;
+      background: var(--primary-color);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      height: 50px;
+      cursor: pointer;
+      margin-top: 30px;
+    }
+
+    form button:hover {
+      background: var(--primary-color-darker);
+    }
+  </style>
+
+  <body>
+    <section class="container">
+      <img
+        src="https://lh3.googleusercontent.com/proxy/1Mj-9kts01pDMIz4ep3cu59rx31UoEAgKPWCyOLqSkZUVsA-JmYIn5lpJxhq_DwFVbNQWxe_7MmHaKcds1QvbxRNEX1_asVg0dJKQQhRvZ9_LdAcS-WCk_GDD-g1Jd2-Eo5m8NNPlw"
+        alt="lenscope"
+        srcset=""
+      />
+      <h1>Vamos achar a melhor lente pra você!</h1>
+      <h2>Digite os dados da sua receita abaixo</h2>
+      <form action="/" id="form" method="POST">
+        <label for="">Grau esferico do olho esquerdo:</label>
+        <input type="" id="grauEsfericoE" name="grauEsfericoE" required />
+        <label for="">Grau esferico do olho direito:</label>
+        <input type="text" id="grauEsfericoD" name="grauEsfericoD" required />
+        <label for="">Grau cilindrico do olho esquerdo:</label>
+        <input type="" id="grauCilindricoE" name="grauCilindricoE" required />
+        <label for="">Grau cilindrico do olho direito:</label>
+        <input type="" id="grauCilindricoD" name="grauCilindricoE" required />
+        <button type="submit">Enviar</button>
+      </form>
+      <div id="resultado"></div>
+    </section>
+
+    <script>
+      const form = document.querySelector("#form");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const inputGrauEsfericoE = e.target.querySelector("#grauEsfericoE");
+        const inputGrauEsfericoD = e.target.querySelector("#grauEsfericoE");
+        const inputGrauCilindricoE = e.target.querySelector("#grauCilindricoE");
+        const inputGrauCilindricoD = e.target.querySelector("#grauCilindricoD");
+        const esfericoE = Number(inputGrauEsfericoE.value);
+        const esfericoD = Number(inputGrauEsfericoD.value);
+        const cilindricoE = Number(inputGrauCilindricoE.value);
+        const cilindricoD = Number(inputGrauCilindricoD.value);
+
+        function setResultado(msg) {
+          const resultado = document.querySelector("#resultado");
+          resultado.innerHTML = "";
+          const p = document.createElement("p");
+          p.innerHTML = msg;
+          resultado.appendChild(p);
+        }
+        if (
+          cilindricoD === 0 &&
+          cilindricoE === 0 &&
+          esfericoD === 0 &&
+          esfericoE === 0
+        ) {
+          return setResultado("Tu não precisa de óculos!!");
+        }
+        if (
+          esfericoD > 0 ||
+          esfericoE > 0 ||
+          esfericoE <= -17 ||
+          esfericoD <= -17
+        ) {
+          return setResultado(
+            "Grau esferico inválido, caso não tenha, por gentileza digite 0",
+            false
+          );
+        }
+        if (
+          cilindricoD > 0 ||
+          cilindricoE > 0 ||
+          cilindricoE <= -7 ||
+          cilindricoD <= -7
+        ) {
+          return setResultado(
+            "Grau cilindrico inválido, caso não tenha, por gentileza digite 0",
+            false
+          );
+        }
+
+        if (
+          (esfericoE >= -12 && esfericoD <= -3) ||
+          (esfericoD >= -12 && esfericoE <= -3)
+        ) {
+          return setResultado("Tua lente é uma lente Prime!!");
+        } else if (
+          (cilindricoE >= -2 && (esfericoD >= -10 || esfericoD <= -3)) ||
+          (cilindricoD >= -2 && (esfericoE >= -10 || esfericoE <= -3))
+        ) {
+          return setResultado("Tua lente é uma lente Prime!!");
+        } else if (
+          (esfericoE >= -15 && cilindricoD <= -5) ||
+          (esfericoD >= -15 && cilindricoE <= -5)
+        ) {
+          return setResultado("Tua lente é uma lente Vision!!");
+        }
+      });
+    </script>
+  </body>
+</html>
